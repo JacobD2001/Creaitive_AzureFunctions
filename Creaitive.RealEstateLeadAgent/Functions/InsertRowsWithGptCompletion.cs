@@ -1,4 +1,4 @@
-using Creaitive.RealEstateLeadAgent.Models;
+using Creaitive.RealEstateLeadAgent.Models.InsertRowsWithGptCompletion.cs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;

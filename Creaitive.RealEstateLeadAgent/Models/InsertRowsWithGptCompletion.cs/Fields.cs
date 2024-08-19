@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Creaitive.RealEstateLeadAgent.Models
+namespace Creaitive.RealEstateLeadAgent.Models.InsertRowsWithGptCompletion.cs
 {
     public class Fields
     {
