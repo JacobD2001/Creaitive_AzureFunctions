@@ -6,7 +6,9 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Creaitive.RealEstateLeadAgent.Functions
@@ -66,7 +68,7 @@ namespace Creaitive.RealEstateLeadAgent.Functions
 
                 var getResultUrl = $"https://emailverifier.reoon.com/api/v1/get-result-bulk-verification-task/?key={data.Key}&task_id={taskId}";
 
-                async Task<VerificationResult> CheckTaskStatusAsync()
+                async Task<List<string>> CheckTaskStatusAsync()
                 {
                     var statusClient = new RestClient(getResultUrl);
                     var statusRequest = new RestRequest("", Method.Get);
@@ -84,11 +86,14 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                             if (statusResult?.Status == "completed")
                             {
                                 _logger.LogInformation("Final verification results: {Results}", JsonConvert.SerializeObject(statusResult));
-                                return statusResult;
+
+                                // Extract verified emails
+                                var verifiedEmails = statusResult?.Results?.Keys.ToList();
+                                return verifiedEmails ?? new List<string>();
                             }
                             else if (statusResult?.Status == "waiting" || statusResult?.Status == "running")
                             {
-                                await Task.Delay(10000); // Poll every 15 seconds
+                                await Task.Delay(10000); // Poll every 10 seconds
                             }
                             else
                             {
@@ -98,12 +103,13 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     });
                 }
 
-                var finalResult = await CheckTaskStatusAsync();
+                var verifiedEmailsList = await CheckTaskStatusAsync();
 
-                _logger.LogInformation("Final result: {FinalResult}", JsonConvert.SerializeObject(finalResult));
+                // Log the final verified emails before returning
+                _logger.LogInformation("Final verified emails to return: {Emails}", JsonConvert.SerializeObject(verifiedEmailsList));
 
-                // Return the complete verification result directly
-                return new OkObjectResult(finalResult);
+                // Return only the verified emails
+                return new OkObjectResult(verifiedEmailsList);
             }
             catch (Exception ex)
             {
