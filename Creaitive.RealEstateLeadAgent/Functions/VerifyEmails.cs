@@ -48,9 +48,9 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     .AddJsonBody(new { name = data.Name, emails = data.Emails, key = data.Key });
 
                 var taskCreationResponse = await client.ExecuteAsync(request);
-                var verificationResult = JsonConvert.DeserializeObject<VerificationResult>(taskCreationResponse.Content);
-
                 _logger.LogInformation("Task creation response: {Response}", taskCreationResponse.Content);
+
+                var verificationResult = JsonConvert.DeserializeObject<VerificationResult>(taskCreationResponse.Content);
 
                 // Extract and log the task ID
                 var taskId = verificationResult?.TaskId;
@@ -75,17 +75,20 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                         while (true)
                         {
                             var statusResponse = await statusClient.ExecuteAsync(statusRequest);
+                            _logger.LogInformation("Raw status response: {Response}", statusResponse.Content);
+
                             var statusResult = JsonConvert.DeserializeObject<VerificationResult>(statusResponse.Content);
 
                             _logger.LogInformation("Current task status: {Status}", statusResult?.Status);
 
                             if (statusResult?.Status == "completed")
                             {
+                                _logger.LogInformation("Final verification results: {Results}", JsonConvert.SerializeObject(statusResult));
                                 return statusResult;
                             }
                             else if (statusResult?.Status == "waiting" || statusResult?.Status == "running")
                             {
-                                await Task.Delay(15000); // Poll every 15 seconds
+                                await Task.Delay(10000); // Poll every 15 seconds
                             }
                             else
                             {
@@ -97,7 +100,10 @@ namespace Creaitive.RealEstateLeadAgent.Functions
 
                 var finalResult = await CheckTaskStatusAsync();
 
-                return new OkObjectResult(new { status = "success", message = "Email verification completed", result = finalResult });
+                _logger.LogInformation("Final result: {FinalResult}", JsonConvert.SerializeObject(finalResult));
+
+                // Return the complete verification result directly
+                return new OkObjectResult(finalResult);
             }
             catch (Exception ex)
             {
