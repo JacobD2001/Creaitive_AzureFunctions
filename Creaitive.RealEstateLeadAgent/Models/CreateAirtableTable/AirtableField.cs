@@ -1,10 +1,4 @@
-﻿using Google.Protobuf.Reflection;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace Creaitive.RealEstateLeadAgent.Models.CreateAirtableTable
 {
@@ -14,14 +8,15 @@ namespace Creaitive.RealEstateLeadAgent.Models.CreateAirtableTable
         public string? Type { get; set; }
 
         [JsonIgnore]
-        public FieldOptions? Options { get; set; }
+        public FieldOptionsBase? Options { get; set; }
 
         [JsonProperty("options", NullValueHandling = NullValueHandling.Ignore)]
-        public FieldOptions? OptionsForSerialization
+        public FieldOptionsBase? OptionsForSerialization
         {
             get
             {
-                if (Type == "singleSelect" || Type == "multipleSelects")
+                // Ensure options are included only for specific types
+                if (Type == "singleSelect" || Type == "multipleSelects" || Type == "rating")
                 {
                     return Options;
                 }
@@ -29,6 +24,4 @@ namespace Creaitive.RealEstateLeadAgent.Models.CreateAirtableTable
             }
         }
     }
-
-
 }

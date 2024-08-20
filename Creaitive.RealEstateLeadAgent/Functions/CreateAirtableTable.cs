@@ -52,7 +52,7 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     {
                         Name = "Status",
                         Type = "singleSelect",
-                        Options = new FieldOptions
+                        Options = new SingleSelectOptions
                         {
                             Choices = new List<FieldChoice>
                             {
@@ -68,7 +68,17 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     new AirtableField { Name = "Agent-Title", Type = "singleLineText" },
                     new AirtableField { Name = "Agent-Phone-Office", Type = "phoneNumber" },
                     new AirtableField { Name = "Agent-Phone-Mobile", Type = "phoneNumber" },
-                    //new AirtableField { Name = "Agent-Rating", Type = "rating" },
+                    new AirtableField
+                    {
+                        Name = "Agent-Rating",
+                        Type = "rating",
+                        Options = new RatingOptions
+                        {
+                            Color = "yellowBright", 
+                            Icon = "star", 
+                            Max = 5 
+                        }
+                    },
                     new AirtableField { Name = "Agent-Description", Type = "richText" },
                     new AirtableField { Name = "Agent-Website", Type = "url" },
                     //new AirtableField { Name = "Agent-Photo-URL", Type = "multipleAttachments" },
