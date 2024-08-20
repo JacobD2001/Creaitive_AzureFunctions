@@ -233,9 +233,9 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                 // Initialize the RestClient for sending the HTTP request to the Airtable API
                 var client = new RestClient(new RestClientOptions($"https://api.airtable.com/v0/meta/bases/{data.AirtableBaseId}/tables"));
                 var request = new RestRequest("", Method.Post)
-                    .AddHeader("Authorization", $"Bearer {data.AirtablePersonalToken}")  // Add the authorization header with the API key
-                    .AddHeader("Content-Type", "application/json")                     // Set the content type to JSON
-                    .AddParameter("application/json", serializedJson, ParameterType.RequestBody); // Add the serialized JSON to the request body
+                    .AddHeader("Authorization", $"Bearer {data.AirtablePersonalToken}")  
+                    .AddHeader("Content-Type", "application/json")                    
+                    .AddParameter("application/json", serializedJson, ParameterType.RequestBody); 
 
                 // Send the request to the Airtable API and await the response
                 var response = await client.ExecuteAsync(request);
