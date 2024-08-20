@@ -39,20 +39,14 @@ namespace Creaitive.RealEstateLeadAgent.Models.InsertRows
         [JsonProperty("Agent-Address-City")]
         public string? AddressCity { get; set; }
 
-        [JsonProperty("Agent-Address-Country")]
-        public string? AddressCountry { get; set; }
-
         [JsonProperty("Agent-Address-Line")]
         public string? AddressLine { get; set; }
 
         [JsonProperty("Agent-Address-Postal-Code")]
         public string? AddressPostalCode { get; set; }
 
-        [JsonProperty("Agent-Address-State-Code")]
-        public string? AddressStateCode { get; set; }
-
-        [JsonProperty("Agent-Phone-Office")]
-        public string? PhoneOffice { get; set; }
+        [JsonProperty("Agent-Address-State")]
+        public string? AddressState { get; set; }
 
         [JsonProperty("Agent-Phone-Mobile")]
         public string? PhoneMobile { get; set; }
@@ -102,35 +96,17 @@ namespace Creaitive.RealEstateLeadAgent.Models.InsertRows
         [JsonProperty("Office-Address-City")]
         public string? OfficeAddressCity { get; set; }
 
-        [JsonProperty("Office-Address-Country")]
-        public string? OfficeAddressCountry { get; set; }
-
         [JsonProperty("Office-Address-Line")]
         public string? OfficeAddressLine { get; set; }
 
         [JsonProperty("Office-Address-Postal-Code")]
         public string? OfficeAddressPostalCode { get; set; }
 
-        [JsonProperty("Office-Address-State-Code")]
-        public string? OfficeAddressStateCode { get; set; }
+        [JsonProperty("Office-Address-State")]
+        public string? OfficeAddressState { get; set; }
 
-        [JsonProperty("Office-Phone-1")]
-        public string? OfficePhone1 { get; set; }
-
-        [JsonProperty("Office-Phone-1-Type")]
-        public string? OfficePhone1Type { get; set; }
-
-        [JsonProperty("Office-Phone-2")]
-        public string? OfficePhone2 { get; set; }
-
-        [JsonProperty("Office-Phone-2-Type")]
-        public string? OfficePhone2Type { get; set; }
-
-        [JsonProperty("Office-Phone-3")]
-        public string? OfficePhone3 { get; set; }
-
-        [JsonProperty("Office-Phone-3-Type")]
-        public string? OfficePhone3Type { get; set; }
+        [JsonProperty("Office-Phone")]
+        public string? OfficePhone { get; set; }
 
         [JsonProperty("Specialization-1-Name")]
         public string? Specialization1Name { get; set; }

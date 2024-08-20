@@ -58,56 +58,63 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                 {
                     var fields = new Fields
                     {
+                        // Agent Information
                         Email = item.Email,
+                        EmailContent = null,  
+                        Status = "pending",  
                         FirstName = item.FirstName,
                         LastName = item.LastName,
                         FullName = item.FullName,
-                        Description = item.Description,
-                        AgentRating = item.AgentRating,
-                        LastUpdated = !string.IsNullOrEmpty(item.LastUpdated) ? DateTime.Parse(item.LastUpdated) : (DateTime?)null,
-                        AddressCity = item.Address?.City,
-                        //AddressCountry = item.Address?.Country,
-                        AddressLine = item.Address?.Line,
-                        AddressPostalCode = item.Address?.PostalCode,
-                        AddressStateCode = item.Address?.StateCode,
-                        PhoneOffice = item.Phones?.FirstOrDefault(p => p.Type == "Office")?.Number,
-                        PhoneMobile = item.Phones?.FirstOrDefault(p => p.Type == "Mobile")?.Number,
-                        ForSaleCount = item.ForSalePrice?.Count,
-                        ForSaleMaxPrice = item.ForSalePrice?.Max,
-                        ForSaleMinPrice = item.ForSalePrice?.Min,
-                        ForSaleLastListingDate = !string.IsNullOrEmpty(item.ForSalePrice?.LastListingDate) ? DateTime.Parse(item.ForSalePrice.LastListingDate) : (DateTime?)null,
-                        RecentlySoldMaxPrice = item.RecentlySold?.Max,
-                        RecentlySoldMinPrice = item.RecentlySold?.Min,
-                        RecentlySoldLastSoldDate = !string.IsNullOrEmpty(item.RecentlySold?.LastSoldDate) ? DateTime.Parse(item.RecentlySold.LastSoldDate) : (DateTime?)null,
                         Role = item.Role,
                         Title = item.Title,
-                        //Website = item.Website,
+                        PhoneMobile = item.Phones?.FirstOrDefault(p => p.Type == "Mobile")?.Number,
+                        AgentRating = item.AgentRating,
+                        Description = item.Description,
+                        Website = item.WebUrl,
+                        LastUpdated = !string.IsNullOrEmpty(item.LastUpdated) ? DateTime.Parse(item.LastUpdated) : (DateTime?)null,
+
+                        // Agent Address
+                        AddressCity = item.Address?.City,
+                        AddressLine = item.Address?.Line,
+                        AddressPostalCode = item.Address?.PostalCode,
+                        AddressState = item.Address?.State,
+
+                        // Office Information
                         OfficeName = item.Office?.Name,
-                        //OfficeSlogan = item.Office?.Slogan,
+                        OfficeSlogan = item.Slogan,  
                         OfficeWebsite = item.Office?.Website,
                         OfficeEmail = item.Office?.Email,
                         OfficeAddressCity = item.Office?.Address?.City,
-                        //OfficeAddressCountry = item.Office?.Address?.Country,
                         OfficeAddressLine = item.Office?.Address?.Line,
                         OfficeAddressPostalCode = item.Office?.Address?.PostalCode,
-                        OfficeAddressStateCode = item.Office?.Address?.StateCode,
-                        OfficePhone1 = item.Office?.Phones?.FirstOrDefault()?.Number,
-                        OfficePhone1Type = item.Office?.Phones?.FirstOrDefault()?.Type,
-                        OfficePhone2 = item.Office?.Phones?.Skip(1).FirstOrDefault()?.Number,
-                        OfficePhone2Type = item.Office?.Phones?.Skip(1).FirstOrDefault()?.Type,
-                        OfficePhone3 = item.Office?.Phones?.Skip(2).FirstOrDefault()?.Number,
-                        OfficePhone3Type = item.Office?.Phones?.Skip(2).FirstOrDefault()?.Type,
+                        OfficeAddressState = item.Office?.Address?.StateCode,
+                        OfficePhone = item.Office?.Phones?.FirstOrDefault()?.Number,  
+
+                        // For Sale Information
+                        ForSaleCount = item.ForSalePrice?.Count,
+                        ForSaleLastListingDate = !string.IsNullOrEmpty(item.ForSalePrice?.LastListingDate) ? DateTime.Parse(item.ForSalePrice.LastListingDate) : (DateTime?)null,
+                        ForSaleMaxPrice = item.ForSalePrice?.Max,
+                        ForSaleMinPrice = item.ForSalePrice?.Min,
+
+                        // Recently Sold Information
+                        RecentlySoldLastSoldDate = !string.IsNullOrEmpty(item.RecentlySold?.LastSoldDate) ? DateTime.Parse(item.RecentlySold.LastSoldDate) : (DateTime?)null,
+                        RecentlySoldMaxPrice = item.RecentlySold?.Max,
+                        RecentlySoldMinPrice = item.RecentlySold?.Min,
+
+                        // Specializations (only first three)
                         Specialization1Name = item.Specializations?.ElementAtOrDefault(0)?.Name,
                         Specialization2Name = item.Specializations?.ElementAtOrDefault(1)?.Name,
                         Specialization3Name = item.Specializations?.ElementAtOrDefault(2)?.Name,
+
+                        // Marketing Cities (only first three)
                         MarketingCity1Name = item.MarketingAreaCities?.ElementAtOrDefault(0)?.Name,
                         MarketingCity2Name = item.MarketingAreaCities?.ElementAtOrDefault(1)?.Name,
                         MarketingCity3Name = item.MarketingAreaCities?.ElementAtOrDefault(2)?.Name,
-                        Status = "pending"  
                     };
 
                     records.Add(new Record { Fields = fields });
                 }
+
 
 
                 _logger.LogInformation("Records to be added: {Records}", JsonConvert.SerializeObject(records));
@@ -137,7 +144,6 @@ namespace Creaitive.RealEstateLeadAgent.Functions
 
                         var jsonSettings = new JsonSerializerSettings
                         {
-                            //ContractResolver = new CamelCasePropertyNamesContractResolver(),
                             Formatting = Formatting.Indented
                         };
 
