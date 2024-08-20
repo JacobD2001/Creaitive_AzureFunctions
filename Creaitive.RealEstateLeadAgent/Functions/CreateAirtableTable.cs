@@ -66,7 +66,6 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     new AirtableField { Name = "Agent-Full-Name", Type = "singleLineText" },
                     new AirtableField { Name = "Agent-Role", Type = "singleLineText" },
                     new AirtableField { Name = "Agent-Title", Type = "singleLineText" },
-                    //new AirtableField { Name = "Agent-Types", Type = "multipleSelects" },
                     //new AirtableField { Name = "Agent-Phone-Office", Type = "phoneNumber" },
                     //new AirtableField { Name = "Agent-Phone-Mobile", Type = "phoneNumber" },
                     //new AirtableField { Name = "Agent-Rating", Type = "rating" },
