@@ -8,6 +8,10 @@ namespace Creaitive.RealEstateLeadAgent.Models.CreateAirtableTable
 {
     public class FieldOptions
     {
-        public List<string>? Choices { get; set; }
+        public List<FieldChoice>? Choices { get; set; }
+
+        // Add the Prompt property
+        public List<object>? Prompt { get; set; }
     }
+
 }
