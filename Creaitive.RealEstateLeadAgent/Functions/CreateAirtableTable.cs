@@ -47,22 +47,7 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                 var fields = new List<AirtableField>
                 {
                     new AirtableField { Name = "Agent-Email", Type = "email" },
-                    new AirtableField
-                    {
-                        Name = "E-mail-Content",
-                        Type = "aiText",
-                        Options = new FieldOptions
-                        {
-                            Prompt = new List<object>
-                            {
-                                "This email is personalized for ",
-                                new { field = new { fieldId = "fldAgentFirstName" } },
-                                " ",
-                                new { field = new { fieldId = "fldAgentLastName" } },
-                                ". Here are your tips..."
-                            }
-                        }
-                    },
+                    new AirtableField { Name = "E-mail-Content", Type = "richText" },
                     new AirtableField
                     {
                         Name = "Status",
@@ -80,7 +65,6 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     new AirtableField { Name = "Agent-Last-Name", Type = "singleLineText" },
                     // Add the remaining fields as required...
                 };
-
 
                 // Prepare the Airtable API request
                 var airtableRequest = new AirtableTableRequest
