@@ -9,6 +9,9 @@ namespace Creaitive.RealEstateLeadAgent.Models.InsertRows
 {
     public class Phone
     {
+        [JsonProperty("key")]
+        public string? Key { get; set; }
+
         [JsonProperty("number")]
         public string? Number { get; set; }
 

@@ -58,15 +58,57 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                 {
                     var fields = new Fields
                     {
-                        // Map fields here from fetchedData to Airtable fields
                         Email = item.Email,
+                        FirstName = item.FirstName,
+                        LastName = item.LastName,
                         FullName = item.FullName,
-                        // More mappings here
-                        Status = "pending"
+                        Description = item.Description,
+                        AgentRating = item.AgentRating,
+                        LastUpdated = !string.IsNullOrEmpty(item.LastUpdated) ? DateTime.Parse(item.LastUpdated) : (DateTime?)null,
+                        AddressCity = item.Address?.City,
+                        //AddressCountry = item.Address?.Country,
+                        AddressLine = item.Address?.Line,
+                        AddressPostalCode = item.Address?.PostalCode,
+                        AddressStateCode = item.Address?.StateCode,
+                        PhoneOffice = item.Phones?.FirstOrDefault(p => p.Type == "Office")?.Number,
+                        PhoneMobile = item.Phones?.FirstOrDefault(p => p.Type == "Mobile")?.Number,
+                        ForSaleCount = item.ForSalePrice?.Count,
+                        ForSaleMaxPrice = item.ForSalePrice?.Max,
+                        ForSaleMinPrice = item.ForSalePrice?.Min,
+                        ForSaleLastListingDate = !string.IsNullOrEmpty(item.ForSalePrice?.LastListingDate) ? DateTime.Parse(item.ForSalePrice.LastListingDate) : (DateTime?)null,
+                        RecentlySoldMaxPrice = item.RecentlySold?.Max,
+                        RecentlySoldMinPrice = item.RecentlySold?.Min,
+                        RecentlySoldLastSoldDate = !string.IsNullOrEmpty(item.RecentlySold?.LastSoldDate) ? DateTime.Parse(item.RecentlySold.LastSoldDate) : (DateTime?)null,
+                        Role = item.Role,
+                        Title = item.Title,
+                        //Website = item.Website,
+                        OfficeName = item.Office?.Name,
+                        //OfficeSlogan = item.Office?.Slogan,
+                        OfficeWebsite = item.Office?.Website,
+                        OfficeEmail = item.Office?.Email,
+                        OfficeAddressCity = item.Office?.Address?.City,
+                        //OfficeAddressCountry = item.Office?.Address?.Country,
+                        OfficeAddressLine = item.Office?.Address?.Line,
+                        OfficeAddressPostalCode = item.Office?.Address?.PostalCode,
+                        OfficeAddressStateCode = item.Office?.Address?.StateCode,
+                        OfficePhone1 = item.Office?.Phones?.FirstOrDefault()?.Number,
+                        OfficePhone1Type = item.Office?.Phones?.FirstOrDefault()?.Type,
+                        OfficePhone2 = item.Office?.Phones?.Skip(1).FirstOrDefault()?.Number,
+                        OfficePhone2Type = item.Office?.Phones?.Skip(1).FirstOrDefault()?.Type,
+                        OfficePhone3 = item.Office?.Phones?.Skip(2).FirstOrDefault()?.Number,
+                        OfficePhone3Type = item.Office?.Phones?.Skip(2).FirstOrDefault()?.Type,
+                        Specialization1Name = item.Specializations?.ElementAtOrDefault(0)?.Name,
+                        Specialization2Name = item.Specializations?.ElementAtOrDefault(1)?.Name,
+                        Specialization3Name = item.Specializations?.ElementAtOrDefault(2)?.Name,
+                        MarketingCity1Name = item.MarketingAreaCities?.ElementAtOrDefault(0)?.Name,
+                        MarketingCity2Name = item.MarketingAreaCities?.ElementAtOrDefault(1)?.Name,
+                        MarketingCity3Name = item.MarketingAreaCities?.ElementAtOrDefault(2)?.Name,
+                        Status = "pending"  
                     };
 
                     records.Add(new Record { Fields = fields });
                 }
+
 
                 _logger.LogInformation("Records to be added: {Records}", JsonConvert.SerializeObject(records));
 
