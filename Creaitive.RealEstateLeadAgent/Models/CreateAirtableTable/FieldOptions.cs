@@ -39,8 +39,10 @@ namespace Creaitive.RealEstateLeadAgent.Models.CreateAirtableTable
         public string? Format { get; set; }
     }
 
-
-
+    public class NumberOptions : FieldOptionsBase
+    {
+        public int? Precision { get; set; }
+    }
 
 
 }

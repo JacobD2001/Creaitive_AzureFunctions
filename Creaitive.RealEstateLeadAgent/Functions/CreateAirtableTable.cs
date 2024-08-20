@@ -101,9 +101,6 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                             },
                         }
                     },              
-                    //new AirtableField { Name = "Agent-First-Month", Type = "number" },
-                    //new AirtableField { Name = "Agent-First-Year", Type = "number" },
-
                     // Agent Address
                     new AirtableField { Name = "Agent-Address-City", Type = "singleLineText" },
                     new AirtableField { Name = "Agent-Address-Country", Type = "singleLineText" },
@@ -134,7 +131,13 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     new AirtableField { Name = "Office-Phone-3-Type", Type = "singleLineText" },
 
                     // For Sale Information
-                    //new AirtableField { Name = "For-Sale-Count", Type = "number" },
+                    new AirtableField {
+                        Name = "For-Sale-Count",
+                        Type = "number",
+                        Options = new NumberOptions {
+                            Precision = 0
+                        }
+                    },
                     new AirtableField { Name = "For-Sale-Last-Listing-Date",
                         Type = "dateTime",
                         Options = new DateTimeOptions
@@ -152,12 +155,8 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                             },
                         }
                     },              
-                    //new AirtableField { Name = "Agent-First-Month", Type = "number" },
                     //new AirtableField { Name = "For-Sale-Max-Price", Type = "currency" },
                     //new AirtableField { Name = "For-Sale-Min-Price", Type = "currency" },
-
-                    // Recently Sold Information
-                    //new AirtableField { Name = "Recently-Sold-Count", Type = "number" },
                     new AirtableField { Name = "Recently-Sold-Last-Sold-Date",
                         Type = "dateTime",
                         Options = new DateTimeOptions
