@@ -66,8 +66,8 @@ namespace Creaitive.RealEstateLeadAgent.Models.InsertRows
         [JsonProperty("For-Sale-Min-Price")]
         public decimal? ForSaleMinPrice { get; set; }
 
-        [JsonProperty("Recently-Sold-Count")]
-        public int? RecentlySoldCount { get; set; }
+        //[JsonProperty("Recently-Sold-Count")]
+        //public int? RecentlySoldCount { get; set; }
 
         [JsonProperty("Recently-Sold-Max-Price")]
         public decimal? RecentlySoldMaxPrice { get; set; }

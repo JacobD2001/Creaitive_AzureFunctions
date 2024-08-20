@@ -95,7 +95,7 @@ namespace Creaitive.RealEstateLeadAgent.Functions
 
                         var jsonSettings = new JsonSerializerSettings
                         {
-                            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                            //ContractResolver = new CamelCasePropertyNamesContractResolver(),
                             Formatting = Formatting.Indented
                         };
 

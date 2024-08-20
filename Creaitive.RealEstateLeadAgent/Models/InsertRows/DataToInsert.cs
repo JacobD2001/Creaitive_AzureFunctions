@@ -39,8 +39,8 @@ namespace Creaitive.RealEstateLeadAgent.Models.InsertRows
         [JsonProperty("for_sale_price")]
         public ForSalePrice? ForSalePrice { get; set; }
 
-        [JsonProperty("recently_sold")]
-        public RecentlySold? RecentlySold { get; set; }
+        //[JsonProperty("recently_sold")]
+        //public RecentlySold? RecentlySold { get; set; }
 
         [JsonProperty("agent_type")]
         public List<string>? AgentType { get; set; }
