@@ -16,7 +16,7 @@ namespace Creaitive.RealEstateLeadAgent.Models.CreateAirtableTable
             get
             {
                 // Return options only for the relevant types
-                if (Type == "singleSelect" || Type == "multipleSelects" || Type == "rating" || Type == "dateTime" || Type == "number")
+                if (Type == "singleSelect" || Type == "multipleSelects" || Type == "rating" || Type == "dateTime" || Type == "number" || Type == "currency")
                 {
                     return Options;
                 }

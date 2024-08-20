@@ -81,7 +81,6 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     },
                     new AirtableField { Name = "Agent-Description", Type = "richText" },
                     new AirtableField { Name = "Agent-Website", Type = "url" },
-                    //new AirtableField { Name = "Agent-Photo-URL", Type = "multipleAttachments" },
                     new AirtableField
                     {
                         Name = "Agent-Last-Updated",
@@ -113,7 +112,6 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     new AirtableField { Name = "Office-Slogan", Type = "singleLineText" },
                     new AirtableField { Name = "Office-Website", Type = "url" },
                     new AirtableField { Name = "Office-Email", Type = "email" },
-                    //new AirtableField { Name = "Office-Photo-URL", Type = "multipleAttachments" },
 
                     // Office Address
                     new AirtableField { Name = "Office-Address-City", Type = "singleLineText" },
@@ -154,9 +152,22 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                                 Format = "HH:mm"
                             },
                         }
-                    },              
-                    //new AirtableField { Name = "For-Sale-Max-Price", Type = "currency" },
-                    //new AirtableField { Name = "For-Sale-Min-Price", Type = "currency" },
+                    },
+                    new AirtableField {
+                        Name = "For-Sale-Max-Price",
+                        Type = "currency",
+                        Options = new CurrencyOptions {
+                            Precision = 0, 
+                            Symbol = "$"   
+                        }
+                    },
+                    new AirtableField { Name = "For-Sale-Min-Price",
+                        Type = "currency",
+                        Options = new CurrencyOptions {
+                            Precision = 0,
+                            Symbol = "$"
+                        }
+                    },
                     new AirtableField { Name = "Recently-Sold-Last-Sold-Date",
                         Type = "dateTime",
                         Options = new DateTimeOptions
@@ -174,8 +185,20 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                             },
                         }
                     },              
-                    //new AirtableField { Name = "Recently-Sold-Max-Price", Type = "currency" },
-                    //new AirtableField { Name = "Recently-Sold-Min-Price", Type = "currency" },
+                    new AirtableField { Name = "Recently-Sold-Max-Price",
+                        Type = "currency",
+                        Options = new CurrencyOptions {
+                            Precision = 0,
+                            Symbol = "$"
+                        }
+                    },
+                    new AirtableField { Name = "Recently-Sold-Min-Price",
+                        Type = "currency",
+                        Options = new CurrencyOptions {
+                            Precision = 0,
+                            Symbol = "$"
+                        }
+                    },
 
                     // Specializations
                     new AirtableField { Name = "Specialization-1-Name", Type = "singleLineText" },

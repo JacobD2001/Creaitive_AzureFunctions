@@ -44,5 +44,11 @@ namespace Creaitive.RealEstateLeadAgent.Models.CreateAirtableTable
         public int? Precision { get; set; }
     }
 
+    public class CurrencyOptions : FieldOptionsBase
+    {
+        public int? Precision { get; set; }
+        public string? Symbol { get; set; }
+    }
+
 
 }
