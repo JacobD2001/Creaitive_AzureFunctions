@@ -1,4 +1,4 @@
-/*using Creaitive.RealEstateLeadAgent.Models.InsertRowsWithGptCompletion.cs;
+using Creaitive.RealEstateLeadAgent.Models.InsertRows;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -6,23 +6,21 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace Creaitive.RealEstateLeadAgent.Functions
 {
-    public class InsertRowsWithGptCompletion
+    public class InsertRows
     {
-        private readonly ILogger<InsertRowsWithGptCompletion> _logger;
+        private const string apifyToken = "apify_api_ct06M4KKZTqMyqBxky9cBpPxXQSyS11di9cl";
 
-        public InsertRowsWithGptCompletion(ILogger<InsertRowsWithGptCompletion> logger)
+        private readonly ILogger<InsertRows> _logger;
+
+        public InsertRows(ILogger<InsertRows> logger)
         {
             _logger = logger;
         }
 
-        [Function("InsertRowsWithGptCompletion")]
+        [Function("InsertRows")]
         public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req)
         {
             _logger.LogInformation("Function invoked.");
@@ -36,34 +34,38 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                 _logger.LogInformation("Received request with body: {Body}", requestBody);
 
                 // Validate required fields
-                if (data == null || data.VerifiedEmails == null || data.EmailContent == null ||
-                    string.IsNullOrEmpty(data.AirtableBaseId) || string.IsNullOrEmpty(data.AirtablePersonalToken) ||
-                    string.IsNullOrEmpty(data.TableIdOrName))
+                if (data == null || string.IsNullOrEmpty(data.AirtableBaseId) || string.IsNullOrEmpty(data.AirtablePersonalToken) || string.IsNullOrEmpty(data.TableIdOrName))
                 {
                     _logger.LogError("Missing required fields: {Data}", data);
                     return new BadRequestObjectResult(new { error = "Missing required fields" });
                 }
 
-                if (data.VerifiedEmails.Count != data.EmailContent.Count)
-                {
-                    _logger.LogError("Mismatch between number of emails and email contents: Emails = {EmailCount}, EmailContents = {EmailContentCount}",
-                        data.VerifiedEmails.Count, data.EmailContent.Count);
-                    return new BadRequestObjectResult(new { error = "The number of emails and email contents must match" });
-                }
+                // Fetch data from external API
+                var apiUrl = $"https://api.apify.com/v2/acts/jupri~realtor-agents/runs/last/dataset/items?status=SUCCEEDED&token={apifyToken}";
+                var httpClient = new HttpClient();
+                var apiResponse = await httpClient.GetStringAsync(apiUrl);
 
-                // Prepare the rows to be added to Airtable
+                _logger.LogInformation("Fetched the following data from APIFY: ", JsonConvert.SerializeObject(apiResponse));
+
+
+                // Deserialize the response into our model
+                var fetchedData = JsonConvert.DeserializeObject<List<DataToInsert>>(apiResponse);
+
+                // Prepare the records for Airtable
                 var records = new List<Record>();
-                for (int i = 0; i < data.VerifiedEmails.Count; i++)
+
+                foreach (var item in fetchedData)
                 {
-                    records.Add(new Record
+                    var fields = new Fields
                     {
-                        Fields = new Fields
-                        {
-                            Email = data.VerifiedEmails[i],
-                            EmailContent = data.EmailContent[i],
-                            Status = "pending"
-                        }
-                    });
+                        // Map fields here from fetchedData to Airtable fields
+                        Email = item.Email,
+                        FullName = item.FullName,
+                        // More mappings here
+                        Status = "pending"
+                    };
+
+                    records.Add(new Record { Fields = fields });
                 }
 
                 _logger.LogInformation("Records to be added: {Records}", JsonConvert.SerializeObject(records));
@@ -100,7 +102,7 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                         var jsonBody = JsonConvert.SerializeObject(new { records = chunk }, jsonSettings);
                         request.AddParameter("application/json", jsonBody, ParameterType.RequestBody);
 
-                        _logger.LogInformation("airtable request body: {jsonBody}", jsonBody);
+                        _logger.LogInformation("Airtable request body: {jsonBody}", jsonBody);
 
                         var response = await client.ExecuteAsync(request);
 
@@ -133,4 +135,4 @@ namespace Creaitive.RealEstateLeadAgent.Functions
         }
     }
 }
-*/
+
