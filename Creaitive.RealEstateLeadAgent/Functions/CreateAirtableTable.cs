@@ -60,11 +60,74 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                                 new FieldChoice { Name = "sent" }
                             }
                         }
-                    },
-                    new AirtableField { Name = "Agent-First-Name", Type = "singleLineText" },
+                    },                  /*  new AirtableField { Name = "Agent-First-Name", Type = "singleLineText" },
                     new AirtableField { Name = "Agent-Last-Name", Type = "singleLineText" },
-                    // Add the remaining fields as required...
+                    new AirtableField { Name = "Agent-Full-Name", Type = "singleLineText" },
+                    new AirtableField { Name = "Agent-Role", Type = "singleLineText" },
+                    new AirtableField { Name = "Agent-Title", Type = "singleLineText" },
+                    //new AirtableField { Name = "Agent-Types", Type = "multipleSelects" },
+                    //new AirtableField { Name = "Agent-Phone-Office", Type = "phoneNumber" },
+                    //new AirtableField { Name = "Agent-Phone-Mobile", Type = "phoneNumber" },
+                    //new AirtableField { Name = "Agent-Rating", Type = "rating" },
+                    new AirtableField { Name = "Agent-Description", Type = "longText" },
+                    new AirtableField { Name = "Agent-Website", Type = "url" },
+                    //new AirtableField { Name = "Agent-Photo-URL", Type = "multipleAttachments" },
+                    //new AirtableField { Name = "Agent-Last-Updated", Type = "dateTime" },
+                    //new AirtableField { Name = "Agent-First-Month", Type = "number" },
+                    //new AirtableField { Name = "Agent-First-Year", Type = "number" },
+
+                    // Agent Address
+                    new AirtableField { Name = "Agent-Address-City", Type = "singleLineText" },
+                    new AirtableField { Name = "Agent-Address-Country", Type = "singleLineText" },
+                    new AirtableField { Name = "Agent-Address-Line", Type = "singleLineText" },
+                    new AirtableField { Name = "Agent-Address-Postal-Code", Type = "singleLineText" },
+                    new AirtableField { Name = "Agent-Address-State-Code", Type = "singleLineText" },
+
+                    // Office Information
+                    new AirtableField { Name = "Office-Name", Type = "singleLineText" },
+                    new AirtableField { Name = "Office-Slogan", Type = "singleLineText" },
+                    new AirtableField { Name = "Office-Website", Type = "url" },
+                    new AirtableField { Name = "Office-Email", Type = "email" },
+                    //new AirtableField { Name = "Office-Photo-URL", Type = "multipleAttachments" },
+
+                    // Office Address
+                    new AirtableField { Name = "Office-Address-City", Type = "singleLineText" },
+                    new AirtableField { Name = "Office-Address-Country", Type = "singleLineText" },
+                    new AirtableField { Name = "Office-Address-Line", Type = "singleLineText" },
+                    new AirtableField { Name = "Office-Address-Postal-Code", Type = "singleLineText" },
+                    new AirtableField { Name = "Office-Address-State-Code", Type = "singleLineText" },
+
+                    // Office Phones
+                    new AirtableField { Name = "Office-Phone-1", Type = "phoneNumber" },
+                    new AirtableField { Name = "Office-Phone-1-Type", Type = "singleLineText" },
+                    new AirtableField { Name = "Office-Phone-2", Type = "phoneNumber" },
+                    new AirtableField { Name = "Office-Phone-2-Type", Type = "singleLineText" },
+                    new AirtableField { Name = "Office-Phone-3", Type = "phoneNumber" },
+                    new AirtableField { Name = "Office-Phone-3-Type", Type = "singleLineText" },
+
+                    // For Sale Information
+                    //new AirtableField { Name = "For-Sale-Count", Type = "number" },
+                    //new AirtableField { Name = "For-Sale-Last-Listing-Date", Type = "dateTime" },
+                    //new AirtableField { Name = "For-Sale-Max-Price", Type = "currency" },
+                    //new AirtableField { Name = "For-Sale-Min-Price", Type = "currency" },
+
+                    // Recently Sold Information
+                    //new AirtableField { Name = "Recently-Sold-Count", Type = "number" },
+                    //new AirtableField { Name = "Recently-Sold-Last-Sold-Date", Type = "dateTime" },
+                    //new AirtableField { Name = "Recently-Sold-Max-Price", Type = "currency" },
+                    //new AirtableField { Name = "Recently-Sold-Min-Price", Type = "currency" },
+
+                    // Specializations
+                    new AirtableField { Name = "Specialization-1-Name", Type = "singleLineText" },
+                    new AirtableField { Name = "Specialization-2-Name", Type = "singleLineText" },
+                    new AirtableField { Name = "Specialization-3-Name", Type = "singleLineText" },
+
+                    // Marketing Area Cities
+                    new AirtableField { Name = "Marketing-City-1-Name", Type = "singleLineText" },
+                    new AirtableField { Name = "Marketing-City-2-Name", Type = "singleLineText" },
+                    new AirtableField { Name = "Marketing-City-3-Name", Type = "singleLineText" },*/
                 };
+
 
                 // Prepare the Airtable API request
                 var airtableRequest = new AirtableTableRequest
