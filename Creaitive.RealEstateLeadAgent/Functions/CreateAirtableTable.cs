@@ -60,7 +60,8 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                                 new FieldChoice { Name = "sent" }
                             }
                         }
-                    },                  /*  new AirtableField { Name = "Agent-First-Name", Type = "singleLineText" },
+                    },                   
+                    new AirtableField { Name = "Agent-First-Name", Type = "singleLineText" },
                     new AirtableField { Name = "Agent-Last-Name", Type = "singleLineText" },
                     new AirtableField { Name = "Agent-Full-Name", Type = "singleLineText" },
                     new AirtableField { Name = "Agent-Role", Type = "singleLineText" },
@@ -69,8 +70,8 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     //new AirtableField { Name = "Agent-Phone-Office", Type = "phoneNumber" },
                     //new AirtableField { Name = "Agent-Phone-Mobile", Type = "phoneNumber" },
                     //new AirtableField { Name = "Agent-Rating", Type = "rating" },
-                    new AirtableField { Name = "Agent-Description", Type = "longText" },
-                    new AirtableField { Name = "Agent-Website", Type = "url" },
+                    new AirtableField { Name = "Agent-Description", Type = "richText" },
+                    //new AirtableField { Name = "Agent-Website", Type = "url" },
                     //new AirtableField { Name = "Agent-Photo-URL", Type = "multipleAttachments" },
                     //new AirtableField { Name = "Agent-Last-Updated", Type = "dateTime" },
                     //new AirtableField { Name = "Agent-First-Month", Type = "number" },
@@ -86,7 +87,7 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     // Office Information
                     new AirtableField { Name = "Office-Name", Type = "singleLineText" },
                     new AirtableField { Name = "Office-Slogan", Type = "singleLineText" },
-                    new AirtableField { Name = "Office-Website", Type = "url" },
+                    //new AirtableField { Name = "Office-Website", Type = "url" },
                     new AirtableField { Name = "Office-Email", Type = "email" },
                     //new AirtableField { Name = "Office-Photo-URL", Type = "multipleAttachments" },
 
@@ -98,11 +99,11 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     new AirtableField { Name = "Office-Address-State-Code", Type = "singleLineText" },
 
                     // Office Phones
-                    new AirtableField { Name = "Office-Phone-1", Type = "phoneNumber" },
+                    //new AirtableField { Name = "Office-Phone-1", Type = "phoneNumber" },
                     new AirtableField { Name = "Office-Phone-1-Type", Type = "singleLineText" },
-                    new AirtableField { Name = "Office-Phone-2", Type = "phoneNumber" },
+                    //new AirtableField { Name = "Office-Phone-2", Type = "phoneNumber" },
                     new AirtableField { Name = "Office-Phone-2-Type", Type = "singleLineText" },
-                    new AirtableField { Name = "Office-Phone-3", Type = "phoneNumber" },
+                   // new AirtableField { Name = "Office-Phone-3", Type = "phoneNumber" },
                     new AirtableField { Name = "Office-Phone-3-Type", Type = "singleLineText" },
 
                     // For Sale Information
@@ -125,7 +126,7 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     // Marketing Area Cities
                     new AirtableField { Name = "Marketing-City-1-Name", Type = "singleLineText" },
                     new AirtableField { Name = "Marketing-City-2-Name", Type = "singleLineText" },
-                    new AirtableField { Name = "Marketing-City-3-Name", Type = "singleLineText" },*/
+                    new AirtableField { Name = "Marketing-City-3-Name", Type = "singleLineText" },
                 };
 
 
