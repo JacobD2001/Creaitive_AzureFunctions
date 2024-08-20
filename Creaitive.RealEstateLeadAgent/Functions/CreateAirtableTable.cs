@@ -82,7 +82,25 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     new AirtableField { Name = "Agent-Description", Type = "richText" },
                     new AirtableField { Name = "Agent-Website", Type = "url" },
                     //new AirtableField { Name = "Agent-Photo-URL", Type = "multipleAttachments" },
-                    //new AirtableField { Name = "Agent-Last-Updated", Type = "dateTime" },
+                    new AirtableField
+                    {
+                        Name = "Agent-Last-Updated",
+                        Type = "dateTime",
+                        Options = new DateTimeOptions
+                        {
+                            TimeZone = "utc",
+                            DateFormat = new AirtableDateFormat
+                            {
+                                Format = "YYYY-MM-DD",
+                                Name = "iso",
+                            },
+                            TimeFormat = new AirtableTimeFormat
+                            {
+                                Name = "24hour",
+                                Format = "HH:mm"
+                            },
+                        }
+                    },              
                     //new AirtableField { Name = "Agent-First-Month", Type = "number" },
                     //new AirtableField { Name = "Agent-First-Year", Type = "number" },
 
@@ -117,13 +135,46 @@ namespace Creaitive.RealEstateLeadAgent.Functions
 
                     // For Sale Information
                     //new AirtableField { Name = "For-Sale-Count", Type = "number" },
-                    //new AirtableField { Name = "For-Sale-Last-Listing-Date", Type = "dateTime" },
+                    new AirtableField { Name = "For-Sale-Last-Listing-Date",
+                        Type = "dateTime",
+                        Options = new DateTimeOptions
+                        {
+                            TimeZone = "utc",
+                            DateFormat = new AirtableDateFormat
+                            {
+                                Format = "YYYY-MM-DD",
+                                Name = "iso",
+                            },
+                            TimeFormat = new AirtableTimeFormat
+                            {
+                                Name = "24hour",
+                                Format = "HH:mm"
+                            },
+                        }
+                    },              
+                    //new AirtableField { Name = "Agent-First-Month", Type = "number" },
                     //new AirtableField { Name = "For-Sale-Max-Price", Type = "currency" },
                     //new AirtableField { Name = "For-Sale-Min-Price", Type = "currency" },
 
                     // Recently Sold Information
                     //new AirtableField { Name = "Recently-Sold-Count", Type = "number" },
-                    //new AirtableField { Name = "Recently-Sold-Last-Sold-Date", Type = "dateTime" },
+                    new AirtableField { Name = "Recently-Sold-Last-Sold-Date",
+                        Type = "dateTime",
+                        Options = new DateTimeOptions
+                        {
+                            TimeZone = "utc",
+                            DateFormat = new AirtableDateFormat
+                            {
+                                Format = "YYYY-MM-DD",
+                                Name = "iso",
+                            },
+                            TimeFormat = new AirtableTimeFormat
+                            {
+                                Name = "24hour",
+                                Format = "HH:mm"
+                            },
+                        }
+                    },              
                     //new AirtableField { Name = "Recently-Sold-Max-Price", Type = "currency" },
                     //new AirtableField { Name = "Recently-Sold-Min-Price", Type = "currency" },
 

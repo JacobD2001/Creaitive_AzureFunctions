@@ -20,4 +20,27 @@ namespace Creaitive.RealEstateLeadAgent.Models.CreateAirtableTable
         public string? Icon { get; set; }
     }
 
+    public class DateTimeOptions : FieldOptionsBase
+    {
+        public AirtableDateFormat? DateFormat { get; set; }
+        public AirtableTimeFormat? TimeFormat { get; set; }
+        public string? TimeZone { get; set; }
+    }
+
+    public class AirtableDateFormat
+    {
+        public string? Format { get; set; }
+        public string? Name { get; set; }
+    }
+
+    public class AirtableTimeFormat
+    {
+        public string? Name { get; set; }
+        public string? Format { get; set; }
+    }
+
+
+
+
+
 }
