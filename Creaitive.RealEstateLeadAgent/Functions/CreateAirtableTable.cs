@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using RestSharp;
 using System;
@@ -249,8 +250,20 @@ namespace Creaitive.RealEstateLeadAgent.Functions
 
                 _logger.LogInformation("Airtable API response: {ResponseContent}", response.Content);
 
-                // Return the successful response from Airtable as the function's response
-                return new OkObjectResult(response.Content);
+                // Parse the response to get the ID of the created table
+                var responseJson = JObject.Parse(response.Content);
+                var tableId = responseJson["id"]?.ToString();
+
+                if (string.IsNullOrEmpty(tableId))
+                {
+                    _logger.LogError("Failed to retrieve the table ID from the Airtable response.");
+                    return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                }
+
+                _logger.LogInformation("Created Airtable table ID: {TableId}", tableId);
+
+                // Return the table ID as the function's response
+                return new OkObjectResult(new { id = tableId });
             }
             catch (Exception ex)
             {
