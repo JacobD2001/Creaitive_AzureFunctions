@@ -59,8 +59,8 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                         {
                             Choices = new List<FieldChoice>
                             {
-                                new FieldChoice { Name = "pending" },
-                                new FieldChoice { Name = "sent" }
+                                new FieldChoice { Name = "pending", Color = "orangeLight1" },
+                                new FieldChoice { Name = "sent", Color = "greenLight1" }
                             }
                         }
                     },                   
