@@ -14,6 +14,8 @@ namespace Creaitive.RealEstateLeadAgent.Models.InsertRows
 
         [JsonProperty("E-mail-Content")]
         public string? EmailContent { get; set; }
+        [JsonProperty("E-mail-Subject")]
+        public string? EmailSubject { get; set; }
 
         [JsonProperty("Status")]
         public string? Status { get; set; }

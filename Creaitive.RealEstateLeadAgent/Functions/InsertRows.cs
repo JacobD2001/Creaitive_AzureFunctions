@@ -6,12 +6,15 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using RestSharp;
+using System.Net.Http.Json;
 
 namespace Creaitive.RealEstateLeadAgent.Functions
 {
     public class InsertRows
     {
         private const string apifyToken = "apify_api_ct06M4KKZTqMyqBxky9cBpPxXQSyS11di9cl";
+        private const string openAiKey = "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";
+        private const string openAiApiUrl = "https://api.openai.com/v1/chat/completions";
 
         private readonly ILogger<InsertRows> _logger;
 
@@ -30,6 +33,7 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                 // Parse the request body
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var data = JsonConvert.DeserializeObject<RequestData>(requestBody);
+                string emailContent, emailSubject;
 
                 _logger.LogInformation("Received request with body: {Body}", requestBody);
 
@@ -56,11 +60,15 @@ namespace Creaitive.RealEstateLeadAgent.Functions
 
                 foreach (var item in fetchedData)
                 {
+
+                    (emailSubject, emailContent) = await GenerateEmailContent(item);
+
                     var fields = new Fields
                     {
                         // Agent Information
                         Email = item.Email,
-                        EmailContent = null,  
+                        EmailSubject = emailSubject,
+                        EmailContent = emailContent,  
                         Status = "pending",  
                         FirstName = item.FirstName,
                         LastName = item.LastName,
@@ -181,6 +189,68 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
+
+        private async Task<(string EmailSubject, string EmailContent)> GenerateEmailContent(DataToInsert item)
+        {
+            _logger.LogInformation("Starting GenerateEmailContent method execution.");
+
+            var prompt = $"Generate an email subject and content for the following agent:\nName: {item.FullName}\nSpecializations: {string.Join(", ", item.Specializations?.Select(s => s.Name) ?? new List<string>())}\nMarketing Cities: {string.Join(", ", item.MarketingAreaCities?.Select(c => c.Name) ?? new List<string>())}\n\nSubject:\nContent:";
+
+            var requestBody = new
+            {
+                model = "gpt-4o-mini",
+                messages = new[]
+                {
+                    new { role = "system", content = "You are a helpful assistant." },
+                    new { role = "user", content = prompt }
+                },
+                max_tokens = 150,
+                temperature = 0.7
+            };
+
+            try
+            {
+                _logger.LogInformation("Sending request to OpenAI API. Request Body: {RequestBody}", JsonConvert.SerializeObject(requestBody));
+
+                var httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {openAiKey}");
+                var response = await httpClient.PostAsJsonAsync(openAiApiUrl, requestBody);
+
+                _logger.LogInformation("Received response from OpenAI API. Status Code: {StatusCode}", response.StatusCode);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    _logger.LogInformation("OpenAI API Response Content: {ResponseContent}", responseContent);
+
+                    dynamic jsonResponse = JsonConvert.DeserializeObject(responseContent);
+                    var generatedText = (string)jsonResponse.choices[0].message.content;
+
+                    // Assuming the API response follows the format: "Subject: ... Content: ..."
+                    var subjectIndex = generatedText.IndexOf("Subject:") + 8;
+                    var contentIndex = generatedText.IndexOf("Content:");
+
+                    var emailSubject = generatedText.Substring(subjectIndex, contentIndex - subjectIndex).Trim();
+                    var emailContent = generatedText.Substring(contentIndex + 8).Trim();
+
+                    _logger.LogInformation("Email subject and content generated successfully.");
+                    return (emailSubject, emailContent);
+                }
+                else
+                {
+                    _logger.LogError("Failed to generate email content. Status Code: {StatusCode}, Response: {Response}", response.StatusCode, await response.Content.ReadAsStringAsync());
+                    return ("Default Subject", "Default email content");  // Fallback content in case of an error
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while generating email content.");
+                return ("Default Subject", "Default email content");  // Fallback content in case of an error
+            }
+        }
+
+
     }
+
 }
 

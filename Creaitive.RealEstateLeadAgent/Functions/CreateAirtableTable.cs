@@ -48,7 +48,9 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                 var fields = new List<AirtableField>
                 {
                     new AirtableField { Name = "Agent-Email", Type = "email" },
+                    new AirtableField { Name = "E-mail-Subject", Type = "singleLineText" },
                     new AirtableField { Name = "E-mail-Content", Type = "richText" },
+
                     new AirtableField
                     {
                         Name = "Status",
