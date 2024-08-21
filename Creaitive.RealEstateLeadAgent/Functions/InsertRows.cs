@@ -199,24 +199,29 @@ namespace Creaitive.RealEstateLeadAgent.Functions
             }
         }
 
-        // Generate e-mail content with openAI
         private async Task<(string EmailSubject, string EmailContent)> GenerateEmailContent(DataToInsert item, string emailSignature, string offer)
         {
             _logger.LogInformation("Starting GenerateEmailContent method execution.");
 
-            // Create the prompt for OpenAI
-            var prompt = $"Generate an email subject and content for the following agent:\n" +
-                         $"Name: {item.FullName}\n" +
+            // Create the prompt for OpenAI to generate email content
+            var prompt = $"Your goal is to create the email that will insterest the potential lead and increase its change in responding to the email.\n" +
+                         $"The email should be written in a friendly, non salesy manner, should be very personalised.\n" +
+                         $"It's very important that your response should have the following format: Subject:... Content: .... ALWAYS maintain this format and the casing, this is extremly important.\n" +
+                         $"Please create a short email subject and content for the following agent:\n" +
+                         $"Name(if possible extract the first name only): {item.FullName}\n" +
                          $"Specializations: {string.Join(", ", item.Specializations?.Select(s => s.Name) ?? new List<string>())}\n" +
-                         $"Marketing Cities: {string.Join(", ", item.MarketingAreaCities?.Select(c => c.Name) ?? new List<string>())}\n\n" +
-                         $"Subject:\nContent:";
+                         $"Description(the description will help you personalise the message as it tells more about the agent {item.Description}" +
+                         $"Offer: Summarize the following offer in a catchy and concise way: \"{offer}\" and include it in the email content.\n" +
+                         $"Signature: End the email with the following words: `Talk soon` and signature: {emailSignature}\n\n" +
+                         $"Subject(no longer than 41 characters): The subject should be personalised, mentioning the city where the agent operates {string.Join(", ", item.MarketingAreaCities?.Select(c => c.Name) ?? new List<string>())}\n" +
+                         $"Content (no longer than 120 words):";
 
             var requestBody = new
             {
                 model = "gpt-4o-mini",
                 messages = new[]
                 {
-                    new { role = "system", content = "You are a helpful assistant." },
+                    new { role = "system", content = "You are a highly skilled copywriter crafting personalized emails for real estate agents." },
                     new { role = "user", content = prompt }
                 },
                 max_tokens = 150,
@@ -248,9 +253,6 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     var emailSubject = generatedText.Substring(subjectIndex, contentIndex - subjectIndex).Trim();
                     var emailContent = generatedText.Substring(contentIndex + 8).Trim();
 
-                    // Append the offer and email signature to the content
-                    emailContent += $"\n\n{offer}\n\n{emailSignature}";
-
                     _logger.LogInformation("Email subject and content generated successfully.");
                     return (emailSubject, emailContent);
                 }
@@ -266,6 +268,7 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                 return ("Default Subject", "Default email content");  // Fallback content in case of an error
             }
         }
+
 
         //Fetch emailsignature and offer
         private async Task<(string EmailSignature, string Offer)> FetchLatestSubmission(string baseId, string tableIdOrName, string airtablePersonalToken)
