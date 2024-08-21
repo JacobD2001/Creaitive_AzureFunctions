@@ -44,6 +44,15 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     return new BadRequestObjectResult(new { error = "Missing required fields" });
                 }
 
+                // Fetch the latest submission (email signature and offer)
+                var (emailSignature, offer) = await FetchLatestSubmission(data.AirtableBaseId, "Submissions", data.AirtablePersonalToken);
+
+                if (string.IsNullOrEmpty(emailSignature) || string.IsNullOrEmpty(offer))
+                {
+                    _logger.LogError("Failed to retrieve email signature or offer.");
+                    return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                }
+
                 // Fetch data from external API
                 var apiUrl = $"https://api.apify.com/v2/acts/jupri~realtor-agents/runs/last/dataset/items?status=SUCCEEDED&token={apifyToken}";
                 var httpClient = new HttpClient();
@@ -61,7 +70,7 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                 foreach (var item in fetchedData)
                 {
 
-                    (emailSubject, emailContent) = await GenerateEmailContent(item);
+                    (emailSubject, emailContent) = await GenerateEmailContent(item, emailSignature, offer);
 
                     var fields = new Fields
                     {
@@ -190,11 +199,17 @@ namespace Creaitive.RealEstateLeadAgent.Functions
             }
         }
 
-        private async Task<(string EmailSubject, string EmailContent)> GenerateEmailContent(DataToInsert item)
+        // Generate e-mail content with openAI
+        private async Task<(string EmailSubject, string EmailContent)> GenerateEmailContent(DataToInsert item, string emailSignature, string offer)
         {
             _logger.LogInformation("Starting GenerateEmailContent method execution.");
 
-            var prompt = $"Generate an email subject and content for the following agent:\nName: {item.FullName}\nSpecializations: {string.Join(", ", item.Specializations?.Select(s => s.Name) ?? new List<string>())}\nMarketing Cities: {string.Join(", ", item.MarketingAreaCities?.Select(c => c.Name) ?? new List<string>())}\n\nSubject:\nContent:";
+            // Create the prompt for OpenAI
+            var prompt = $"Generate an email subject and content for the following agent:\n" +
+                         $"Name: {item.FullName}\n" +
+                         $"Specializations: {string.Join(", ", item.Specializations?.Select(s => s.Name) ?? new List<string>())}\n" +
+                         $"Marketing Cities: {string.Join(", ", item.MarketingAreaCities?.Select(c => c.Name) ?? new List<string>())}\n\n" +
+                         $"Subject:\nContent:";
 
             var requestBody = new
             {
@@ -233,6 +248,9 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                     var emailSubject = generatedText.Substring(subjectIndex, contentIndex - subjectIndex).Trim();
                     var emailContent = generatedText.Substring(contentIndex + 8).Trim();
 
+                    // Append the offer and email signature to the content
+                    emailContent += $"\n\n{offer}\n\n{emailSignature}";
+
                     _logger.LogInformation("Email subject and content generated successfully.");
                     return (emailSubject, emailContent);
                 }
@@ -248,6 +266,53 @@ namespace Creaitive.RealEstateLeadAgent.Functions
                 return ("Default Subject", "Default email content");  // Fallback content in case of an error
             }
         }
+
+        //Fetch emailsignature and offer
+        private async Task<(string EmailSignature, string Offer)> FetchLatestSubmission(string baseId, string tableIdOrName, string airtablePersonalToken)
+        {
+            try
+            {
+                _logger.LogInformation("Fetching the latest submission from Airtable.");
+
+                // Airtable API URL to fetch records sorted by createdTime in descending order and limit to 1 record
+                var airtableApiUrl = $"https://api.airtable.com/v0/{baseId}/{tableIdOrName}?sort[0][field]=Created%20Time&sort[0][direction]=desc&maxRecords=1";
+                var httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {airtablePersonalToken}");
+
+                // Log the outgoing request details
+                _logger.LogInformation("Sending request to Airtable API. URL: {Url}, Headers: {Headers}", airtableApiUrl, httpClient.DefaultRequestHeaders);
+
+                var response = await httpClient.GetAsync(airtableApiUrl);
+
+                // Log the received response status code and content
+                _logger.LogInformation("Received response from Airtable API. Status Code: {StatusCode}", response.StatusCode);
+                var responseContent = await response.Content.ReadAsStringAsync();
+                _logger.LogInformation("Airtable API Response Content: {ResponseContent}", responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    dynamic jsonResponse = JsonConvert.DeserializeObject(responseContent);
+                    string emailSignature = jsonResponse.records[0].fields["Email Signature"];
+                    string offer = jsonResponse.records[0].fields["Offer"];
+
+                    _logger.LogInformation("Latest submission fetched successfully. Email Signature: {EmailSignature}, Offer: {Offer}", emailSignature, offer);
+                    return (emailSignature, offer);
+                }
+                else
+                {
+                    _logger.LogError("Failed to fetch the latest submission from Airtable. Status Code: {StatusCode}, Response: {ResponseContent}", response.StatusCode, responseContent);
+                    return ("", ""); // Return empty values if fetch fails
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching the latest submission.");
+                return ("", ""); // Return empty values in case of an error
+            }
+        }
+
+
+
 
 
     }
